@@ -2,11 +2,12 @@
     "name": "friends-of-behat/page-object-extension",
     "description": "Provides default classes for Page object pattern in Behat",
     "type": "library",
-    "license": "MIT",,
+    "license": "MIT",
     "authors": [
         {
             "name": "Mateusz Zalewski",
-            "email": "zaleslaw@gmail.com"
+            "email": "mateusz.p.zalewski@gmail.com",
+            "homepage": "http://mpzalewski.com.pl"
         }
     ],
     "require": {
