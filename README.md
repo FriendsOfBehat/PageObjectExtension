@@ -4,11 +4,13 @@ Provides default classes for Page object pattern in Behat.
 
 ### Page
 
-`Page` represents specific page on web, API etc. This concept is extracted from [Sylius Behat system](https://github.com/Sylius/Sylius/tree/master/src/Sylius/Behat/Page).
+`Page` represents specific page on web, API etc.
+This concept is extracted from [Sylius Behat system](https://github.com/Sylius/Sylius/tree/master/src/Sylius/Behat/Page) and
+inspired by [sensiolabs/BehatPageObjectExtension](https://github.com/sensiolabs/BehatPageObjectExtension/tree/master/src/PageObject)
 
 ### Element
 
-`Element` represents part of the page. This concept is extracted from [URBANARA CatalogPromotion plugin](https://github.com/URBANARA/UrbanaraCatalogPromotionPlugin/tree/master/tests/Behat/Element).
+`Element` represents part of the page. This concept is extracted from [SyliusAdminOrderCreation](https://github.com/Sylius/AdminOrderCreationPlugin/blob/master/tests/Behat/Element/Element.php).
 
 ## Installation
 
