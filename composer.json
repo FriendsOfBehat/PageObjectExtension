@@ -5,6 +5,15 @@
     "license": "MIT",
     "authors": [
         {
+            "name": "Łukasz Chruściel",
+            "email": "lchrusciel@gmail.com"
+        },
+        {
+            "name": "Kamil Kokot",
+            "email": "kamil@kokot.me",
+            "homepage": "http://kamil.kokot.me"
+        },
+        {
             "name": "Mateusz Zalewski",
             "email": "mateusz.p.zalewski@gmail.com",
             "homepage": "http://mpzalewski.com.pl"
