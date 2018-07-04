@@ -22,7 +22,8 @@
     "require": {
         "php": "^7.1",
 
-        "behat/mink": "^1.7"
+        "behat/mink": "^1.7",
+        "symfony/routing": "^3.4"
     },
     "autoload": {
         "psr-4": { "FriendsOfBehat\\PageObjectExtension\\": "src/" }
