@@ -9,12 +9,21 @@ use Symfony\Component\Routing\RouterInterface;
 
 abstract class SymfonyPage extends Page implements SymfonyPageInterface
 {
-    /** @var RouterInterface */
+    /**
+     * @var RouterInterface
+     */
     protected $router;
 
-    /** @var array */
+    /**
+     * @var array
+     */
     protected static $additionalParameters = ['_locale' => 'en_US'];
 
+    /**
+     * @param Session $session
+     * @param array $parameters
+     * @param RouterInterface $router
+     */
     public function __construct(Session $session, array $parameters, RouterInterface $router)
     {
         parent::__construct($session, $parameters);
@@ -22,10 +31,13 @@ abstract class SymfonyPage extends Page implements SymfonyPageInterface
         $this->router = $router;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     abstract public function getRouteName(): string;
 
     /**
-     * @throws UnexpectedPageException
+     * {@inheritdoc}
      */
     public function verifyRoute(array $requiredUrlParameters = []): void
     {
@@ -39,6 +51,11 @@ abstract class SymfonyPage extends Page implements SymfonyPageInterface
         $this->verifyRouteParameters($requiredUrlParameters, $matchedRoute);
     }
 
+    /**
+     * @param string $path
+     *
+     * @return string
+     */
     final protected function makePathAbsolute(string $path): string
     {
         $baseUrl = rtrim($this->getParameter('base_url'), '/') . '/';
@@ -46,6 +63,9 @@ abstract class SymfonyPage extends Page implements SymfonyPageInterface
         return 0 !== strpos($path, 'http') ? $baseUrl . ltrim($path, '/') : $path;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function getUrl(array $urlParameters = []): string
     {
         $path = $this->router->generate($this->getRouteName(), $urlParameters + static::$additionalParameters);
@@ -62,6 +82,9 @@ abstract class SymfonyPage extends Page implements SymfonyPageInterface
         return $this->makePathAbsolute($path);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function verifyUrl(array $urlParameters = []): void
     {
         $url = $this->getDriver()->getCurrentUrl();
@@ -78,6 +101,9 @@ abstract class SymfonyPage extends Page implements SymfonyPageInterface
     }
 
     /**
+     * @param array $matchedRoute
+     * @param string $url
+     *
      * @throws UnexpectedPageException
      */
     private function verifyRouteName(array $matchedRoute, string $url): void
@@ -95,6 +121,9 @@ abstract class SymfonyPage extends Page implements SymfonyPageInterface
     }
 
     /**
+     * @param array $requiredUrlParameters
+     * @param array $matchedRoute
+     *
      * @throws UnexpectedPageException
      */
     private function verifyRouteParameters(array $requiredUrlParameters, array $matchedRoute): void

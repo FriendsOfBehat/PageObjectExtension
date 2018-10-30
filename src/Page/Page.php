@@ -14,38 +14,60 @@ use Behat\Mink\Session;
 
 abstract class Page implements PageInterface
 {
-    /** @var Session */
+    /**
+     * @var Session
+     */
     private $session;
 
-    /** @var array */
+    /**
+     * @var array
+     */
     private $parameters;
 
-    /** @var DocumentElement|null */
+    /**
+     * @var DocumentElement|null
+     */
     private $document;
 
+    /**
+     * @param Session $session
+     * @param array $parameters
+     */
     public function __construct(Session $session, array $parameters = [])
     {
         $this->session = $session;
         $this->parameters = $parameters;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function open(array $urlParameters = []): void
     {
         $this->tryToOpen($urlParameters);
         $this->verify($urlParameters);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function tryToOpen(array $urlParameters = []): void
     {
         $this->getSession()->visit($this->getUrl($urlParameters));
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function verify(array $urlParameters = []): void
     {
         $this->verifyStatusCode();
         $this->verifyUrl($urlParameters);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function isOpen(array $urlParameters = []): bool
     {
         try {
@@ -57,6 +79,11 @@ abstract class Page implements PageInterface
         return true;
     }
 
+    /**
+     * @param array $urlParameters
+     *
+     * @return string
+     */
     abstract protected function getUrl(array $urlParameters = []): string;
 
     /**
@@ -83,6 +110,8 @@ abstract class Page implements PageInterface
     /**
      * Overload to verify if the current url matches the expected one. Throw an exception otherwise.
      *
+     * @param array $urlParameters
+     *
      * @throws UnexpectedPageException
      */
     protected function verifyUrl(array $urlParameters = []): void
@@ -92,7 +121,12 @@ abstract class Page implements PageInterface
         }
     }
 
-    protected function getParameter(string $name): NodeElement
+    /**
+     * @param string $name
+     *
+     * @return string
+     */
+    protected function getParameter($name): NodeElement
     {
         return $this->parameters[$name] ?? null;
     }
@@ -101,6 +135,8 @@ abstract class Page implements PageInterface
      * Defines elements by returning an array with items being:
      *  - :elementName => :cssLocator
      *  - :elementName => [:selectorType => :locator]
+     *
+     * @return array
      */
     protected function getDefinedElements(): array
     {
@@ -108,6 +144,11 @@ abstract class Page implements PageInterface
     }
 
     /**
+     * @param string $name
+     * @param array $parameters
+     *
+     * @return NodeElement
+     *
      * @throws ElementNotFoundException
      */
     protected function getElement(string $name, array $parameters = []): NodeElement
@@ -126,21 +167,36 @@ abstract class Page implements PageInterface
         return $element;
     }
 
-    protected function hasElement(string $name, array $parameters = []): bool
+    /**
+     * @param string $name
+     * @param array $parameters
+     *
+     * @return bool
+     */
+    protected function hasElement($name, array $parameters = []): bool
     {
         return $this->getDocument()->has('xpath', $this->createElement($name, $parameters)->getXpath());
     }
 
+    /**
+     * @return Session
+     */
     protected function getSession(): Session
     {
         return $this->session;
     }
 
+    /**
+     * @return DriverInterface
+     */
     protected function getDriver(): DriverInterface
     {
         return $this->session->getDriver();
     }
 
+    /**
+     * @return DocumentElement
+     */
     protected function getDocument(): DocumentElement
     {
         if (null === $this->document) {
@@ -150,6 +206,12 @@ abstract class Page implements PageInterface
         return $this->document;
     }
 
+    /**
+     * @param string $name
+     * @param array $parameters
+     *
+     * @return NodeElement
+     */
     private function createElement(string $name, array $parameters = []): NodeElement
     {
         $definedElements = $this->getDefinedElements();
@@ -172,6 +234,9 @@ abstract class Page implements PageInterface
 
     /**
      * @param string|array $selector
+     * @param SelectorsHandler $selectorsHandler
+     *
+     * @return string
      */
     private function getSelectorAsXpath($selector, SelectorsHandler $selectorsHandler): string
     {
@@ -181,6 +246,13 @@ abstract class Page implements PageInterface
         return $selectorsHandler->selectorToXpath($selectorType, $locator);
     }
 
+    /**
+     * @param string $name
+     * @param array $parameters
+     * @param array$definedElements
+     *
+     * @return string
+     */
     private function resolveParameters(string $name, array $parameters, array $definedElements): string
     {
         if (!is_array($definedElements[$name])) {
