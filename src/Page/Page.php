@@ -92,7 +92,7 @@ abstract class Page implements PageInterface
         }
     }
 
-    protected function getParameter(string $name): NodeElement
+    protected function getParameter(string $name): ?string
     {
         return $this->parameters[$name] ?? null;
     }
