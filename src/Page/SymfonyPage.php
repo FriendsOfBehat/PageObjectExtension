@@ -15,8 +15,19 @@ abstract class SymfonyPage extends Page implements SymfonyPageInterface
     /** @var array */
     protected static $additionalParameters = ['_locale' => 'en_US'];
 
-    public function __construct(Session $session, array $parameters, RouterInterface $router)
+    /**
+     * @param array|\ArrayAccess $parameters
+     */
+    public function __construct(Session $session, $parameters, RouterInterface $router)
     {
+        if (!is_array($parameters) && !$parameters instanceof \ArrayAccess) {
+            throw new \InvalidArgumentException(sprintf(
+                '"$parameters" passed to "%s" has to be an array or implement "%s".',
+                self::class,
+                \ArrayAccess::class
+            ));
+        }
+
         parent::__construct($session, $parameters);
 
         $this->router = $router;
