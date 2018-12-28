@@ -22,8 +22,19 @@ abstract class Element
     /** @var DocumentElement|null */
     private $document;
 
-    public function __construct(Session $session, array $parameters = [])
+    /**
+     * @param array|\ArrayAccess $parameters
+     */
+    public function __construct(Session $session, $parameters = [])
     {
+        if (!is_array($parameters) && !$parameters instanceof \ArrayAccess) {
+            throw new \InvalidArgumentException(sprintf(
+                '"$parameters" passed to "%s" has to be an array or implement "%s".',
+                self::class,
+                \ArrayAccess::class
+            ));
+        }
+
         $this->session = $session;
         $this->parameters = $parameters;
     }
