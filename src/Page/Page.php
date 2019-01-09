@@ -24,11 +24,11 @@ abstract class Page implements PageInterface
     private $document;
 
     /**
-     * @param array|\ArrayAccess $parameters
+     * @param array|\ArrayAccess $minkParameters
      */
-    public function __construct(Session $session, $parameters = [])
+    public function __construct(Session $session, $minkParameters = [])
     {
-        if (!is_array($parameters) && !$parameters instanceof \ArrayAccess) {
+        if (!is_array($minkParameters) && !$minkParameters instanceof \ArrayAccess) {
             throw new \InvalidArgumentException(sprintf(
                 '"$parameters" passed to "%s" has to be an array or implement "%s".',
                 self::class,
@@ -37,7 +37,7 @@ abstract class Page implements PageInterface
         }
 
         $this->session = $session;
-        $this->parameters = $parameters;
+        $this->parameters = $minkParameters;
     }
 
     public function open(array $urlParameters = []): void

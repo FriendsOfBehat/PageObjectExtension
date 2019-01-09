@@ -16,11 +16,11 @@ abstract class SymfonyPage extends Page implements SymfonyPageInterface
     protected static $additionalParameters = ['_locale' => 'en_US'];
 
     /**
-     * @param array|\ArrayAccess $parameters
+     * @param array|\ArrayAccess $minkParameters
      */
-    public function __construct(Session $session, $parameters, RouterInterface $router)
+    public function __construct(Session $session, $minkParameters, RouterInterface $router)
     {
-        if (!is_array($parameters) && !$parameters instanceof \ArrayAccess) {
+        if (!is_array($minkParameters) && !$minkParameters instanceof \ArrayAccess) {
             throw new \InvalidArgumentException(sprintf(
                 '"$parameters" passed to "%s" has to be an array or implement "%s".',
                 self::class,
@@ -28,7 +28,7 @@ abstract class SymfonyPage extends Page implements SymfonyPageInterface
             ));
         }
 
-        parent::__construct($session, $parameters);
+        parent::__construct($session, $minkParameters);
 
         $this->router = $router;
     }
