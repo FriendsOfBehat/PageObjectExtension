@@ -11,6 +11,54 @@ use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Selector\SelectorsHandler;
 use Behat\Mink\Session;
 
+/**
+ * @method NodeElement|null find
+ * @method NodeElement[] findAll
+ * @method NodeElement|null findById
+ * @method string getText
+ * @method string getHtml
+ * @method bool hasLink
+ * @method NodeElement|null findLink
+ * @method void clickLink
+ * @method bool hasButton
+ * @method NodeElement|null findButton
+ * @method void pressButton
+ * @method bool hasField
+ * @method NodeElement|null findField
+ * @method void fillField
+ * @method bool hasCheckedField
+ * @method bool hasUncheckedField
+ * @method void checkField
+ * @method void uncheckField
+ * @method bool hasSelect
+ * @method void selectFieldOption
+ * @method bool hasTable
+ * @method void attachFileToField
+ * @method string getTagName
+ * @method string|bool|array getValue
+ * @method bool hasAttribute
+ * @method string|null getAttribute
+ * @method bool hasClass
+ * @method void click
+ * @method void press
+ * @method void doubleClick
+ * @method void rightClick
+ * @method void check
+ * @method void uncheck
+ * @method bool isChecked
+ * @method void selectOption
+ * @method bool isSelected
+ * @method void attachFile
+ * @method bool isVisible
+ * @method void mouseOver
+ * @method void dragTo
+ * @method void focus
+ * @method void blur
+ * @method void keyPress
+ * @method void keyDown
+ * @method void keyUp
+ * @method void submit
+ */
 abstract class Element
 {
     /** @var Session */
@@ -21,6 +69,21 @@ abstract class Element
 
     /** @var DocumentElement|null */
     private $document;
+
+    /**
+     * This css locator indicates the root of the element in the dom tree.
+     *
+     * @var string
+     */
+    protected $locator = 'body';
+
+    /**
+     * This list of css locators allows you to specify elements in the current element by name.
+     * You can use this name to retrieve them from getElement and getElements.
+     *
+     * @var array [name => locator]
+     */
+    protected $innerElements = [];
 
     /**
      * @param array|\ArrayAccess $minkParameters
@@ -39,14 +102,45 @@ abstract class Element
         $this->parameters = $minkParameters;
     }
 
+    /**
+     * Get the selector of the root of the element in the dom tree.
+     */
+    public function getLocator(): string
+    {
+        return $this->locator;
+    }
+
+    public function containsText(string $text): bool
+    {
+        return strpos($this->getText(), $text) !== false;
+    }
+
+    public function __call($name, $params)
+    {
+        return $this->getElement($this->locator)->$name(...$params);
+    }
+
     protected function getParameter(string $name): NodeElement
     {
         return $this->parameters[$name] ?? null;
     }
 
-    protected function getDefinedElements(): array
+    final protected function getDefinedElements(): array
     {
-        return [];
+        $elements = [$this->locator => $this->locator];
+        foreach ($this->innerElements as $name => $locator) {
+            $elements[$name] = $this->locator . ' ' . $locator;
+        }
+
+        return $elements;
+    }
+
+    /**
+     * @return NodeElement[]
+     */
+    protected function getElements(string $locator): array
+    {
+        return $this->getDocument()->findAll('css', $this->getDefinedElements()[$locator]);
     }
 
     /**
