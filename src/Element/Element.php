@@ -23,6 +23,21 @@ abstract class Element
     private $document;
 
     /**
+     * This css locator indicates the root of the element in the dom tree.
+     *
+     * @var string
+     */
+    protected $locator = 'body';
+
+    /**
+     * This list of css locators allows you to specify elements in the current element by name.
+     * You can use this name to retrieve them from getElement and getElements.
+     *
+     * @var array [name => locator]
+     */
+    protected $innerElements = [];
+
+    /**
      * @param array|\ArrayAccess $minkParameters
      */
     public function __construct(Session $session, $minkParameters = [])
@@ -39,14 +54,103 @@ abstract class Element
         $this->parameters = $minkParameters;
     }
 
+    /**
+     * Get the selector of the root of the element in the dom tree.
+     */
+    public function getLocator(): string
+    {
+        return $this->locator;
+    }
+
+    /**
+     * Finds first element with specified selector inside the current element.
+     *
+     * @param string       $selector selector engine name
+     * @param string|array $locator  selector locator
+     *
+     * @return NodeElement|null
+     *
+     * @see ElementInterface::findAll for the supported selectors
+     */
+    public function find($selector, $locator)
+    {
+        return $this->getElement($this->locator)->find($selector, $locator);
+    }
+
+    /**
+     * Finds all elements with specified selector inside the current element.
+     *
+     * Valid selector engines are named, xpath, css, named_partial and named_exact.
+     *
+     * 'named' is a pseudo selector engine which prefers an exact match but
+     * will return a partial match if no exact match is found.
+     * 'xpath' is a pseudo selector engine supported by SelectorsHandler.
+     *
+     * More selector engines can be registered in the SelectorsHandler.
+     *
+     * @param string       $selector selector engine name
+     * @param string|array $locator  selector locator
+     *
+     * @return NodeElement[]
+     *
+     * @see NamedSelector for the locators supported by the named selectors
+     */
+    public function findAll($selector, $locator)
+    {
+        return $this->getElement($this->locator)->findAll($selector, $locator);
+    }
+
+    /**
+     * Returns element text (inside tag).
+     *
+     * @return string
+     */
+    public function getText()
+    {
+        return $this->getElement($this->locator)->getText();
+    }
+
+    /**
+     * Returns element inner html.
+     *
+     * @return string
+     */
+    public function getHtml()
+    {
+        return $this->getElement($this->locator)->getHtml();
+    }
+
+    public function click(): void
+    {
+        $this->getElement($this->locator)->click();
+    }
+
+    public function fillField(string $locator, string $value)
+    {
+        $this->getElement($this->locator)->fillField($locator, $value);
+    }
+
     protected function getParameter(string $name): NodeElement
     {
         return $this->parameters[$name] ?? null;
     }
 
-    protected function getDefinedElements(): array
+    final protected function getDefinedElements(): array
     {
-        return [];
+        $elements = [$this->locator => $this->locator];
+        foreach ($this->innerElements as $name => $locator) {
+            $elements[$name] = $this->locator . ' ' . $locator;
+        }
+
+        return $elements;
+    }
+
+    /**
+     * @return NodeElement[]
+     */
+    protected function getElements(string $locator): array
+    {
+        return $this->getDocument()->findAll('css', $this->getDefinedElements()[$locator]);
     }
 
     /**
