@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace FriendsOfBehat\PageObjectExtension\Page;
 
 use Behat\Mink\Session;
+use FriendsOfBehat\PageObjectExtension\Element\Element;
+use FriendsOfBehat\PageObjectExtension\Exception\InvalidElement;
+use FriendsOfBehat\SymfonyExtension\Mink\MinkParameters;
 use Symfony\Component\Routing\RouterInterface;
 
 abstract class SymfonyPage extends Page implements SymfonyPageInterface
@@ -15,10 +18,10 @@ abstract class SymfonyPage extends Page implements SymfonyPageInterface
     /** @var array */
     protected static $additionalParameters = ['_locale' => 'en_US'];
 
-    /**
-     * @param array|\ArrayAccess $minkParameters
-     */
-    public function __construct(Session $session, $minkParameters, RouterInterface $router)
+    /** @var array */
+    private $addedElements = [];
+
+    public function __construct(Session $session, MinkParameters $minkParameters, RouterInterface $router)
     {
         if (!is_array($minkParameters) && !$minkParameters instanceof \ArrayAccess) {
             throw new \InvalidArgumentException(sprintf(
@@ -57,6 +60,35 @@ abstract class SymfonyPage extends Page implements SymfonyPageInterface
         return 0 !== strpos($path, 'http') ? $baseUrl . ltrim($path, '/') : $path;
     }
 
+    protected function hasElement(string $name, array $parameters = []): bool
+    {
+        if (strpos($name, '\\') !== false) {
+            $this->addedElements[$name] = $this->getElementObject($name)->getLocator();
+        }
+
+        return parent::hasElement($name);
+    }
+
+    protected function getElementObject(string $className): Element
+    {
+        if ( ! class_exists($className)) {
+            throw InvalidElement::forName($className);
+        }
+
+        $element = new $className($this->getSession(), []);
+
+        if ( ! $element instanceof Element) {
+            throw InvalidElement::forObject($element);
+        }
+
+        return $element;
+    }
+
+    protected function getDefinedElements(): array
+    {
+        return array_merge(parent::getDefinedElements(), $this->addedElements);
+    }
+
     protected function getUrl(array $urlParameters = []): string
     {
         $path = $this->router->generate($this->getRouteName(), $urlParameters + static::$additionalParameters);
@@ -75,10 +107,11 @@ abstract class SymfonyPage extends Page implements SymfonyPageInterface
 
     protected function verifyUrl(array $urlParameters = []): void
     {
-        $url = $this->getDriver()->getCurrentUrl();
-        $path = parse_url($url)['path'];
+        $parts = parse_url($this->getDriver()->getCurrentUrl());
 
-        $path = preg_replace('#^/app(_dev|_test|_test_cached)?\.php/#', '/', $path);
+        $this->router->getContext()->setHost($parts['host']);
+
+        $path = preg_replace('#^/app(_dev|_test|_test_cached)?\.php/#', '/', $parts['path']);
         $matchedRoute = $this->router->match($path);
 
         if (isset($matchedRoute['_locale'])) {

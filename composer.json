@@ -21,8 +21,8 @@
     ],
     "require": {
         "php": "^7.1",
-
-        "behat/mink": "^1.7"
+        "behat/mink": "^1.7",
+        "friends-of-behat/symfony-extension": "^2.0"
     },
     "require-dev": {
         "symfony/routing": "^3.4"
