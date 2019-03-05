@@ -13,6 +13,26 @@ inspired by [sensiolabs/BehatPageObjectExtension](https://github.com/sensiolabs/
 `SymfonyPage` is an extension of `Page` class for better and more straightforward Symfony application support.
 This concept is also extracted from [Sylius Behat system](https://github.com/Sylius/Sylius/tree/master/src/Sylius/Behat/Page)
 
+```php
+class NewsArticlePage extends SymfonyPage
+{
+    public function getRouteName(): string
+    {
+        return 'news.item';
+    }
+
+    public function hasComments(): bool
+    {
+        return $this->hasElement(Comments::class);
+    }
+
+    public function hasTitle(string $text): bool
+    {
+        return $this->getElementObject(Heading::class)->containsText($text);
+    }
+}
+```
+
 ### Element
 
 `Element` represents part of the page. This concept is extracted from [SyliusAdminOrderCreation](https://github.com/Sylius/AdminOrderCreationPlugin/blob/master/tests/Behat/Element/Element.php).

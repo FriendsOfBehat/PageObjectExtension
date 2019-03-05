@@ -11,6 +11,54 @@ use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Selector\SelectorsHandler;
 use Behat\Mink\Session;
 
+/**
+ * @method NodeElement|null find
+ * @method NodeElement[] findAll
+ * @method NodeElement|null findById
+ * @method string getText
+ * @method string getHtml
+ * @method bool hasLink
+ * @method NodeElement|null findLink
+ * @method void clickLink
+ * @method bool hasButton
+ * @method NodeElement|null findButton
+ * @method void pressButton
+ * @method bool hasField
+ * @method NodeElement|null findField
+ * @method void fillField
+ * @method bool hasCheckedField
+ * @method bool hasUncheckedField
+ * @method void checkField
+ * @method void uncheckField
+ * @method bool hasSelect
+ * @method void selectFieldOption
+ * @method bool hasTable
+ * @method void attachFileToField
+ * @method string getTagName
+ * @method string|bool|array getValue
+ * @method bool hasAttribute
+ * @method string|null getAttribute
+ * @method bool hasClass
+ * @method void click
+ * @method void press
+ * @method void doubleClick
+ * @method void rightClick
+ * @method void check
+ * @method void uncheck
+ * @method bool isChecked
+ * @method void selectOption
+ * @method bool isSelected
+ * @method void attachFile
+ * @method bool isVisible
+ * @method void mouseOver
+ * @method void dragTo
+ * @method void focus
+ * @method void blur
+ * @method void keyPress
+ * @method void keyDown
+ * @method void keyUp
+ * @method void submit
+ */
 abstract class Element
 {
     /** @var Session */
@@ -62,72 +110,14 @@ abstract class Element
         return $this->locator;
     }
 
-    /**
-     * Finds first element with specified selector inside the current element.
-     *
-     * @param string       $selector selector engine name
-     * @param string|array $locator  selector locator
-     *
-     * @return NodeElement|null
-     *
-     * @see ElementInterface::findAll for the supported selectors
-     */
-    public function find($selector, $locator)
+    public function containsText(string $text): bool
     {
-        return $this->getElement($this->locator)->find($selector, $locator);
+        return strpos($this->getText(), $text) !== false;
     }
 
-    /**
-     * Finds all elements with specified selector inside the current element.
-     *
-     * Valid selector engines are named, xpath, css, named_partial and named_exact.
-     *
-     * 'named' is a pseudo selector engine which prefers an exact match but
-     * will return a partial match if no exact match is found.
-     * 'xpath' is a pseudo selector engine supported by SelectorsHandler.
-     *
-     * More selector engines can be registered in the SelectorsHandler.
-     *
-     * @param string       $selector selector engine name
-     * @param string|array $locator  selector locator
-     *
-     * @return NodeElement[]
-     *
-     * @see NamedSelector for the locators supported by the named selectors
-     */
-    public function findAll($selector, $locator)
+    public function __call($name, $params)
     {
-        return $this->getElement($this->locator)->findAll($selector, $locator);
-    }
-
-    /**
-     * Returns element text (inside tag).
-     *
-     * @return string
-     */
-    public function getText()
-    {
-        return $this->getElement($this->locator)->getText();
-    }
-
-    /**
-     * Returns element inner html.
-     *
-     * @return string
-     */
-    public function getHtml()
-    {
-        return $this->getElement($this->locator)->getHtml();
-    }
-
-    public function click(): void
-    {
-        $this->getElement($this->locator)->click();
-    }
-
-    public function fillField(string $locator, string $value)
-    {
-        $this->getElement($this->locator)->fillField($locator, $value);
+        return $this->getElement($this->locator)->$name(...$params);
     }
 
     protected function getParameter(string $name): NodeElement
