@@ -39,7 +39,7 @@ abstract class Element
         $this->parameters = $minkParameters;
     }
 
-    protected function getParameter(string $name): NodeElement
+    protected function getParameter(string $name)
     {
         return $this->parameters[$name] ?? null;
     }
