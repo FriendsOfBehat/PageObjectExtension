@@ -120,7 +120,7 @@ abstract class Element
         return $selectorsHandler->selectorToXpath($selectorType, $locator);
     }
 
-    private function resolveParameters(string $name, array $parameters, array $definedElements): string
+    private function resolveParameters(string $name, array $parameters, array $definedElements)
     {
         if (!is_array($definedElements[$name])) {
             return strtr($definedElements[$name], $parameters);
