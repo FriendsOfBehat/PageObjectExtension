@@ -120,18 +120,19 @@ abstract class Element
         return $selectorsHandler->selectorToXpath($selectorType, $locator);
     }
 
-    private function resolveParameters(string $name, array $parameters, array $definedElements): string
+    /**
+     * @return array|string
+     */
+    private function resolveParameters(string $name, array $parameters, array $definedElements)
     {
         if (!is_array($definedElements[$name])) {
             return strtr($definedElements[$name], $parameters);
         }
 
-        array_map(
+        return array_map(
             function ($definedElement) use ($parameters): string {
                 return strtr($definedElement, $parameters);
             }, $definedElements[$name]
         );
-
-        return $definedElements[$name];
     }
 }
