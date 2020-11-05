@@ -20,18 +20,15 @@
         }
     ],
     "require": {
-        "php": "^7.1",
+        "php": "^7.1 || ^8.0",
 
         "behat/mink": "^1.7"
     },
     "require-dev": {
-        "symfony/routing": "^3.4"
+        "symfony/routing": "^3.4 || ^4.4 || ^5.1"
     },
     "suggest": {
         "symfony/routing": "Allow better support for PageObject pattern in Symfony applications"
-    },
-    "conflict": {
-        "symfony/routing": "<3.4"
     },
     "autoload": {
         "psr-4": { "FriendsOfBehat\\PageObjectExtension\\": "src/" }
