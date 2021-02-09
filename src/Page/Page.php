@@ -103,6 +103,26 @@ abstract class Page implements PageInterface
         }
     }
 
+    /**
+     * Overload to verify if the current url contains a provided fragment. Throw an exception otherwise.
+     *
+     * @throws UnexpectedPageException
+     */
+    protected function verifyUrlFragment(string $fragment): void
+    {
+        $parsedUrl = parse_url($this->getDriver()->getCurrentUrl());
+
+        if (!is_array($parsedUrl) || !array_key_exists('fragment', $parsedUrl)) {
+            throw new UnexpectedPageException(sprintf('%s URL is not valid or does not contain a fragment', $this->getDriver()->getCurrentUrl()));
+        }
+
+        if (mb_strpos($parsedUrl['fragment'], $fragment) !== false) {
+            return;
+        }
+
+        throw new UnexpectedPageException(sprintf('Expected to have "%s" URL fragment but found "%s" instead', $fragment, $parsedUrl['fragment']));
+    }
+    
     protected function getParameter(string $name): ?string
     {
         return $this->parameters[$name] ?? null;
