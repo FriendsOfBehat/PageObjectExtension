@@ -52,7 +52,7 @@ abstract class SymfonyPage extends Page implements SymfonyPageInterface
 
     final protected function makePathAbsolute(string $path): string
     {
-        $baseUrl = rtrim($this->getParameter('base_url'), '/') . '/';
+        $baseUrl = rtrim($this->getParameter('base_url') ?? '', '/') . '/';
 
         return 0 !== strpos($path, 'http') ? $baseUrl . ltrim($path, '/') : $path;
     }
