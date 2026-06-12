@@ -1,0 +1,271 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Method FriendsOfBehat\\PageObjectExtension\\Element\\Element\:\:__construct\(\) has parameter \$minkParameters with generic interface ArrayAccess but does not specify its types\: TKey, TValue$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Element/Element.php
+
+		-
+			message: '#^Method FriendsOfBehat\\PageObjectExtension\\Element\\Element\:\:__construct\(\) has parameter \$minkParameters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Element/Element.php
+
+		-
+			message: '#^Method FriendsOfBehat\\PageObjectExtension\\Element\\Element\:\:createElement\(\) has parameter \$parameters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Element/Element.php
+
+		-
+			message: '#^Method FriendsOfBehat\\PageObjectExtension\\Element\\Element\:\:getDefinedElements\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Element/Element.php
+
+		-
+			message: '#^Method FriendsOfBehat\\PageObjectExtension\\Element\\Element\:\:getElement\(\) has parameter \$parameters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Element/Element.php
+
+		-
+			message: '#^Method FriendsOfBehat\\PageObjectExtension\\Element\\Element\:\:getSelectorAsXpath\(\) has parameter \$selector with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Element/Element.php
+
+		-
+			message: '#^Method FriendsOfBehat\\PageObjectExtension\\Element\\Element\:\:hasElement\(\) has parameter \$parameters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Element/Element.php
+
+		-
+			message: '#^Method FriendsOfBehat\\PageObjectExtension\\Element\\Element\:\:resolveParameters\(\) has parameter \$definedElements with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Element/Element.php
+
+		-
+			message: '#^Method FriendsOfBehat\\PageObjectExtension\\Element\\Element\:\:resolveParameters\(\) has parameter \$parameters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Element/Element.php
+
+		-
+			message: '#^Method FriendsOfBehat\\PageObjectExtension\\Element\\Element\:\:resolveParameters\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Element/Element.php
+
+		-
+			message: '#^Method FriendsOfBehat\\PageObjectExtension\\Page\\Page\:\:__construct\(\) has parameter \$minkParameters with generic interface ArrayAccess but does not specify its types\: TKey, TValue$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Page/Page.php
+
+		-
+			message: '#^Method FriendsOfBehat\\PageObjectExtension\\Page\\Page\:\:__construct\(\) has parameter \$minkParameters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Page/Page.php
+
+		-
+			message: '#^Method FriendsOfBehat\\PageObjectExtension\\Page\\Page\:\:createElement\(\) has parameter \$parameters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Page/Page.php
+
+		-
+			message: '#^Method FriendsOfBehat\\PageObjectExtension\\Page\\Page\:\:getDefinedElements\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Page/Page.php
+
+		-
+			message: '#^Method FriendsOfBehat\\PageObjectExtension\\Page\\Page\:\:getElement\(\) has parameter \$parameters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Page/Page.php
+
+		-
+			message: '#^Method FriendsOfBehat\\PageObjectExtension\\Page\\Page\:\:getSelectorAsXpath\(\) has parameter \$selector with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Page/Page.php
+
+		-
+			message: '#^Method FriendsOfBehat\\PageObjectExtension\\Page\\Page\:\:getUrl\(\) has parameter \$urlParameters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Page/Page.php
+
+		-
+			message: '#^Method FriendsOfBehat\\PageObjectExtension\\Page\\Page\:\:hasElement\(\) has parameter \$parameters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Page/Page.php
+
+		-
+			message: '#^Method FriendsOfBehat\\PageObjectExtension\\Page\\Page\:\:isOpen\(\) has parameter \$urlParameters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Page/Page.php
+
+		-
+			message: '#^Method FriendsOfBehat\\PageObjectExtension\\Page\\Page\:\:open\(\) has parameter \$urlParameters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Page/Page.php
+
+		-
+			message: '#^Method FriendsOfBehat\\PageObjectExtension\\Page\\Page\:\:resolveParameters\(\) has parameter \$definedElements with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Page/Page.php
+
+		-
+			message: '#^Method FriendsOfBehat\\PageObjectExtension\\Page\\Page\:\:resolveParameters\(\) has parameter \$parameters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Page/Page.php
+
+		-
+			message: '#^Method FriendsOfBehat\\PageObjectExtension\\Page\\Page\:\:resolveParameters\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Page/Page.php
+
+		-
+			message: '#^Method FriendsOfBehat\\PageObjectExtension\\Page\\Page\:\:tryToOpen\(\) has parameter \$urlParameters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Page/Page.php
+
+		-
+			message: '#^Method FriendsOfBehat\\PageObjectExtension\\Page\\Page\:\:verify\(\) has parameter \$urlParameters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Page/Page.php
+
+		-
+			message: '#^Method FriendsOfBehat\\PageObjectExtension\\Page\\Page\:\:verifyUrl\(\) has parameter \$urlParameters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Page/Page.php
+
+		-
+			message: '#^Method FriendsOfBehat\\PageObjectExtension\\Page\\PageInterface\:\:isOpen\(\) has parameter \$urlParameters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Page/PageInterface.php
+
+		-
+			message: '#^Method FriendsOfBehat\\PageObjectExtension\\Page\\PageInterface\:\:open\(\) has parameter \$urlParameters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Page/PageInterface.php
+
+		-
+			message: '#^Method FriendsOfBehat\\PageObjectExtension\\Page\\PageInterface\:\:tryToOpen\(\) has parameter \$urlParameters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Page/PageInterface.php
+
+		-
+			message: '#^Method FriendsOfBehat\\PageObjectExtension\\Page\\PageInterface\:\:verify\(\) has parameter \$urlParameters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Page/PageInterface.php
+
+		-
+			message: '#^Method FriendsOfBehat\\PageObjectExtension\\Page\\SymfonyPage\:\:__construct\(\) has parameter \$minkParameters with generic interface ArrayAccess but does not specify its types\: TKey, TValue$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Page/SymfonyPage.php
+
+		-
+			message: '#^Method FriendsOfBehat\\PageObjectExtension\\Page\\SymfonyPage\:\:__construct\(\) has parameter \$minkParameters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Page/SymfonyPage.php
+
+		-
+			message: '#^Method FriendsOfBehat\\PageObjectExtension\\Page\\SymfonyPage\:\:getUrl\(\) has parameter \$urlParameters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Page/SymfonyPage.php
+
+		-
+			message: '#^Method FriendsOfBehat\\PageObjectExtension\\Page\\SymfonyPage\:\:matchCurrentRoute\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Page/SymfonyPage.php
+
+		-
+			message: '#^Method FriendsOfBehat\\PageObjectExtension\\Page\\SymfonyPage\:\:verifyRoute\(\) has parameter \$requiredUrlParameters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Page/SymfonyPage.php
+
+		-
+			message: '#^Method FriendsOfBehat\\PageObjectExtension\\Page\\SymfonyPage\:\:verifyRouteName\(\) has parameter \$matchedRoute with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Page/SymfonyPage.php
+
+		-
+			message: '#^Method FriendsOfBehat\\PageObjectExtension\\Page\\SymfonyPage\:\:verifyRouteParameters\(\) has parameter \$matchedRoute with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Page/SymfonyPage.php
+
+		-
+			message: '#^Method FriendsOfBehat\\PageObjectExtension\\Page\\SymfonyPage\:\:verifyRouteParameters\(\) has parameter \$requiredUrlParameters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Page/SymfonyPage.php
+
+		-
+			message: '#^Method FriendsOfBehat\\PageObjectExtension\\Page\\SymfonyPage\:\:verifyUrl\(\) has parameter \$urlParameters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Page/SymfonyPage.php
+
+		-
+			message: '#^Parameter \#3 \$subject of function preg_replace expects array\<float\|int\|string\>\|string, string\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Page/SymfonyPage.php
+
+		-
+			message: '#^Property FriendsOfBehat\\PageObjectExtension\\Page\\SymfonyPage\:\:\$additionalParameters type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Page/SymfonyPage.php
+
+		-
+			message: '#^Method FriendsOfBehat\\PageObjectExtension\\Page\\SymfonyPageInterface\:\:verifyRoute\(\) has parameter \$requiredUrlParameters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Page/SymfonyPageInterface.php
+
+		-
+			message: '#^Method Tests\\FriendsOfBehat\\PageObjectExtension\\Behat\\Config\\ArrayConfig\:\:__construct\(\) has parameter \$data with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/Behat/Config/ArrayConfig.php
+
+		-
+			message: '#^Method Tests\\FriendsOfBehat\\PageObjectExtension\\Behat\\Config\\ArrayConfig\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/Behat/Config/ArrayConfig.php
+
+		-
+			message: '#^Property Tests\\FriendsOfBehat\\PageObjectExtension\\Behat\\Context\\TestContext\:\:\$mergedConfig type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/Behat/Context/TestContext.php

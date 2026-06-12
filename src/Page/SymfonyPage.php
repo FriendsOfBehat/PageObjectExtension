@@ -9,12 +9,8 @@ use Symfony\Component\Routing\RouterInterface;
 
 abstract class SymfonyPage extends Page implements SymfonyPageInterface
 {
-    /** @var array */
     protected static array $additionalParameters = ['_locale' => 'en_US'];
 
-    /**
-     * @param array|\ArrayAccess $minkParameters
-     */
     public function __construct(Session $session, array|\ArrayAccess $minkParameters, protected RouterInterface $router)
     {
         parent::__construct($session, $minkParameters);
@@ -27,21 +23,17 @@ abstract class SymfonyPage extends Page implements SymfonyPageInterface
      */
     public function verifyRoute(array $requiredUrlParameters = []): void
     {
-        $url = $this->getDriver()->getCurrentUrl();
-        $path = parse_url($url)['path'];
+        $matchedRoute = $this->matchCurrentRoute();
 
-        $path = preg_replace('#^/app(_dev|_test|_test_cached)?\.php/#', '/', $path);
-        $matchedRoute = $this->router->match($path);
-
-        $this->verifyRouteName($matchedRoute, $url);
+        $this->verifyRouteName($matchedRoute, $this->getDriver()->getCurrentUrl());
         $this->verifyRouteParameters($requiredUrlParameters, $matchedRoute);
     }
 
     final protected function makePathAbsolute(string $path): string
     {
-        $baseUrl = rtrim($this->getParameter('base_url'), '/') . '/';
+        $baseUrl = rtrim($this->getParameter('base_url'), '/').'/';
 
-        return !str_starts_with($path, 'http') ? $baseUrl . ltrim($path, '/') : $path;
+        return !str_starts_with($path, 'http') ? $baseUrl.ltrim($path, '/') : $path;
     }
 
     protected function getUrl(array $urlParameters = []): string
@@ -62,11 +54,7 @@ abstract class SymfonyPage extends Page implements SymfonyPageInterface
 
     protected function verifyUrl(array $urlParameters = []): void
     {
-        $url = $this->getDriver()->getCurrentUrl();
-        $path = parse_url($url)['path'];
-
-        $path = preg_replace('#^/app(_dev|_test|_test_cached)?\.php/#', '/', $path);
-        $matchedRoute = $this->router->match($path);
+        $matchedRoute = $this->matchCurrentRoute();
 
         if (isset($matchedRoute['_locale'])) {
             $urlParameters += ['_locale' => $matchedRoute['_locale']];
@@ -75,20 +63,22 @@ abstract class SymfonyPage extends Page implements SymfonyPageInterface
         parent::verifyUrl($urlParameters);
     }
 
+    private function matchCurrentRoute(): array
+    {
+        $path = parse_url($this->getDriver()->getCurrentUrl(), PHP_URL_PATH) ?? '/';
+
+        return $this->router->match(
+            (string) preg_replace('#^/app(_dev|_test|_test_cached)?\.php/#', '/', $path),
+        );
+    }
+
     /**
      * @throws UnexpectedPageException
      */
     private function verifyRouteName(array $matchedRoute, string $url): void
     {
         if ($matchedRoute['_route'] !== $this->getRouteName()) {
-            throw new UnexpectedPageException(
-                sprintf(
-                    "Matched route '%s' does not match the expected route '%s' for URL '%s'",
-                    $matchedRoute['_route'],
-                    $this->getRouteName(),
-                    $url
-                )
-            );
+            throw new UnexpectedPageException(sprintf("Matched route '%s' does not match the expected route '%s' for URL '%s'", $matchedRoute['_route'], $this->getRouteName(), $url));
         }
     }
 
@@ -99,14 +89,7 @@ abstract class SymfonyPage extends Page implements SymfonyPageInterface
     {
         foreach ($requiredUrlParameters as $key => $value) {
             if (!isset($matchedRoute[$key]) || $matchedRoute[$key] !== $value) {
-                throw new UnexpectedPageException(
-                    sprintf(
-                        "Matched route does not match the expected parameter '%s'='%s' (%s found)",
-                        $key,
-                        $value,
-                        $matchedRoute[$key] ?? 'null'
-                    )
-                );
+                throw new UnexpectedPageException(sprintf("Matched route does not match the expected parameter '%s'='%s' (%s found)", $key, $value, $matchedRoute[$key] ?? 'null'));
             }
         }
     }

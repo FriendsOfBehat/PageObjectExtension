@@ -15,21 +15,42 @@ jobs:
     validate-composer:
         name: Validate composer.json
         runs-on: ubuntu-22.04
-        continue-on-error: false
         steps:
-            - name: Checkout
-              uses: actions/checkout@v3
-
-            - name: Setup PHP
-              uses: shivammathur/setup-php@v2
+            - uses: actions/checkout@v4
+            - uses: shivammathur/setup-php@v2
               with:
+                  php-version: '8.3'
                   coverage: none
-                  ini-values: "memory_limit=-1, zend.assertions=1"
-                  php-version: 8.3
                   tools: composer:v2
+            - run: composer validate --strict
 
-            - name: Validate composer.json
-              run: composer validate --strict
+    check-cs:
+        name: Coding standards
+        runs-on: ubuntu-22.04
+        steps:
+            - uses: actions/checkout@v4
+            - uses: shivammathur/setup-php@v2
+              with:
+                  php-version: '8.3'
+                  coverage: none
+                  ini-values: "memory_limit=-1"
+                  tools: composer:v2
+            - run: composer install --prefer-dist --no-progress
+            - run: vendor/bin/php-cs-fixer check --diff
+
+    static-analysis:
+        name: Static analysis
+        runs-on: ubuntu-22.04
+        steps:
+            - uses: actions/checkout@v4
+            - uses: shivammathur/setup-php@v2
+              with:
+                  php-version: '8.3'
+                  coverage: none
+                  ini-values: "memory_limit=-1"
+                  tools: composer:v2
+            - run: composer install --prefer-dist --no-progress
+            - run: vendor/bin/phpstan analyse
 
     check-syntax:
         name: PHP ${{ matrix.php-version }} syntax check
@@ -42,26 +63,18 @@ jobs:
                     - '8.4'
                     - '8.5'
         steps:
-            - name: Checkout
-              uses: actions/checkout@v3
-
-            - name: Setup PHP
-              uses: shivammathur/setup-php@v2
+            - uses: actions/checkout@v4
+            - uses: shivammathur/setup-php@v2
               with:
-                  coverage: none
-                  ini-values: "memory_limit=-1, zend.assertions=1"
                   php-version: ${{ matrix.php-version }}
+                  coverage: none
                   tools: composer:v2
-
-            - name: Install dependencies
-              run: composer install --prefer-dist --no-progress
-
-            - name: Check PHP syntax
-              run: find src -name "*.php" -print0 | xargs -0 -n1 php -l
+            - run: find src -name "*.php" -print0 | xargs -0 -n1 php -l
 
     test:
-        name: PHP ${{ matrix.php-version }} tests
+        name: PHP ${{ matrix.php-version }} / Symfony ${{ matrix.symfony-version }} / Behat ${{ matrix.behat-version }}
         runs-on: ubuntu-22.04
+        continue-on-error: ${{ matrix.experimental }}
         strategy:
             fail-fast: false
             matrix:
@@ -69,20 +82,33 @@ jobs:
                     - '8.3'
                     - '8.4'
                     - '8.5'
+                symfony-version: ['7.4']
+                behat-version: ['^3.31']
+                experimental: [false]
+                include:
+                    # Behat 4 + Symfony 7.4 (experimental until Behat 4 stable)
+                    - { php-version: '8.3', symfony-version: '7.4', behat-version: '4.x-dev', experimental: true }
+                    - { php-version: '8.4', symfony-version: '7.4', behat-version: '4.x-dev', experimental: true }
+                    - { php-version: '8.5', symfony-version: '7.4', behat-version: '4.x-dev', experimental: true }
+                    # Behat 4 + Symfony 8.0 (PHP 8.4+ only — Symfony 8 requires PHP 8.4)
+                    - { php-version: '8.4', symfony-version: '8.0', behat-version: '4.x-dev', experimental: true }
+                    - { php-version: '8.5', symfony-version: '8.0', behat-version: '4.x-dev', experimental: true }
+                    # Behat 4 + Symfony 8.1
+                    - { php-version: '8.4', symfony-version: '8.1', behat-version: '4.x-dev', experimental: true }
+                    - { php-version: '8.5', symfony-version: '8.1', behat-version: '4.x-dev', experimental: true }
         steps:
-            - name: Checkout
-              uses: actions/checkout@v3
-
-            - name: Setup PHP
-              uses: shivammathur/setup-php@v2
+            - uses: actions/checkout@v4
+            - uses: shivammathur/setup-php@v2
               with:
+                  php-version: ${{ matrix.php-version }}
                   coverage: none
                   ini-values: "memory_limit=-1, zend.assertions=1"
-                  php-version: ${{ matrix.php-version }}
                   tools: composer:v2
-
-            - name: Install dependencies
-              run: composer install --prefer-dist --no-progress
-
-            - name: Run tests
-              run: vendor/bin/behat --no-interaction
+            - name: Lock Symfony version
+              if: matrix.symfony-version != '7.4'
+              run: bin/lock-symfony-version.sh ${{ matrix.symfony-version }}
+            - name: Lock Behat version
+              if: matrix.behat-version != '^3.31'
+              run: bin/lock-behat-version.sh ${{ matrix.behat-version }}
+            - run: composer install --prefer-dist --no-progress
+            - run: vendor/bin/behat --no-interaction

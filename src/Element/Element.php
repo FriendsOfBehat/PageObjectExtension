@@ -15,9 +15,6 @@ abstract class Element
 {
     private ?DocumentElement $document = null;
 
-    /**
-     * @param array|\ArrayAccess $minkParameters
-     */
     public function __construct(
         private Session $session,
         private array|\ArrayAccess $minkParameters = [],
@@ -42,12 +39,7 @@ abstract class Element
         $element = $this->createElement($name, $parameters);
 
         if (!$this->getDocument()->has('xpath', $element->getXpath())) {
-            throw new ElementNotFoundException(
-                $this->getSession(),
-                sprintf('Element named "%s" with parameters %s', $name, implode(', ', $parameters)),
-                'xpath',
-                $element->getXpath()
-            );
+            throw new ElementNotFoundException($this->getSession(), sprintf('Element named "%s" with parameters %s', $name, implode(', ', $parameters)), 'xpath', $element->getXpath());
         }
 
         return $element;
@@ -82,11 +74,7 @@ abstract class Element
         $definedElements = $this->getDefinedElements();
 
         if (!isset($definedElements[$name])) {
-            throw new \InvalidArgumentException(sprintf(
-                'Could not find a defined element with name "%s". The defined ones are: %s.',
-                $name,
-                implode(', ', array_keys($definedElements))
-            ));
+            throw new \InvalidArgumentException(sprintf('Could not find a defined element with name "%s". The defined ones are: %s.', $name, implode(', ', array_keys($definedElements))));
         }
 
         $elementSelector = $this->resolveParameters($name, $parameters, $definedElements);
@@ -99,7 +87,7 @@ abstract class Element
 
     private function getSelectorAsXpath(string|array $selector, SelectorsHandler $selectorsHandler): string
     {
-        $selectorType = is_array($selector) ? key($selector) : 'css';
+        $selectorType = is_array($selector) ? (string) array_key_first($selector) : 'css';
         $locator = is_array($selector) ? $selector[$selectorType] : $selector;
 
         return $selectorsHandler->selectorToXpath($selectorType, $locator);
@@ -111,12 +99,6 @@ abstract class Element
             return strtr($definedElements[$name], $parameters);
         }
 
-        array_map(
-            static function ($definedElement) use ($parameters): string {
-                return strtr($definedElement, $parameters);
-            }, $definedElements[$name]
-        );
-
-        return $definedElements[$name];
+        return array_map(static fn ($locator) => strtr($locator, $parameters), $definedElements[$name]);
     }
 }

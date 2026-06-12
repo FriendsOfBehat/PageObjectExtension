@@ -58,7 +58,7 @@ $loader->addPsr4('App\\Tests\\', __DIR__ . '/../tests/');
 
 return $loader;
 PHP,
-            __DIR__ . '/../../../vendor/autoload.php',
+            __DIR__.'/../../../vendor/autoload.php',
         ));
     }
 
@@ -206,7 +206,7 @@ PHP);
     #[\Behat\Step\Given('/^a (?:.+ |)file "([^"]+)" containing(?: "([^"]+)"|:)$/')]
     public function thereIsFile(string $file, string $content): string
     {
-        $path = self::$workingDir . '/' . $file;
+        $path = self::$workingDir.'/'.$file;
 
         if (str_ends_with($file, '.php') && str_contains($content, '* @')) {
             $content = $this->replaceAnnotationsWithAttributes($content);
@@ -243,9 +243,7 @@ PHP);
             return;
         }
 
-        throw new \DomainException(
-            'Behat was expecting to pass, but failed with the following output:' . \PHP_EOL . \PHP_EOL . $this->getProcessOutput(),
-        );
+        throw new \DomainException('Behat was expecting to pass, but failed with the following output:'.\PHP_EOL.\PHP_EOL.$this->getProcessOutput());
     }
 
     #[\Behat\Step\Then('/^it should pass with(?: "([^"]+)"|:)$/')]
@@ -262,9 +260,7 @@ PHP);
             return;
         }
 
-        throw new \DomainException(
-            'Behat was expecting to fail, but passed with the following output:' . \PHP_EOL . \PHP_EOL . $this->getProcessOutput(),
-        );
+        throw new \DomainException('Behat was expecting to fail, but passed with the following output:'.\PHP_EOL.\PHP_EOL.$this->getProcessOutput());
     }
 
     #[\Behat\Step\Then('/^it should fail with(?: "([^"]+)"|:)$/')]
@@ -284,34 +280,30 @@ PHP);
     {
         $output = $this->getProcessOutput();
 
-        if (!preg_match('/' . preg_quote($expectedOutput, '/') . '/sm', $output)) {
-            throw new \DomainException(sprintf(
-                'Expected output to contain "%s", got:' . \PHP_EOL . \PHP_EOL . '%s',
-                $expectedOutput,
-                $output,
-            ));
+        if (!preg_match('/'.preg_quote($expectedOutput, '/').'/sm', $output)) {
+            throw new \DomainException(sprintf('Expected output to contain "%s", got:'.\PHP_EOL.\PHP_EOL.'%s', $expectedOutput, $output));
         }
     }
 
-    private function getProcessOutput(): string
-    {
-        $this->assertProcessIsAvailable();
-
-        return $this->process->getErrorOutput() . $this->process->getOutput();
-    }
-
-    private function getProcessExitCode(): int
-    {
-        $this->assertProcessIsAvailable();
-
-        return $this->process->getExitCode();
-    }
-
-    private function assertProcessIsAvailable(): void
+    private function getProcess(): Process
     {
         if (null === $this->process) {
             throw new \BadMethodCallException('Behat process cannot be found. Did you run it before making assertions?');
         }
+
+        return $this->process;
+    }
+
+    private function getProcessOutput(): string
+    {
+        $process = $this->getProcess();
+
+        return $process->getErrorOutput().$process->getOutput();
+    }
+
+    private function getProcessExitCode(): int
+    {
+        return (int) $this->getProcess()->getExitCode();
     }
 
     private function replaceAnnotationsWithAttributes(string $code): string
@@ -321,7 +313,7 @@ PHP);
             static function (array $m): string {
                 $indent = $m[1];
                 $name = $m[2];
-                $arg = isset($m[3]) && $m[3] !== '' ? "('" . str_replace("'", "\\'", $m[3]) . "')" : '';
+                $arg = isset($m[3]) && '' !== $m[3] ? "('".str_replace("'", "\\'", $m[3])."')" : '';
                 $ns = in_array($name, ['Given', 'When', 'Then'], true) ? 'Step' : 'Hook';
 
                 return "{$indent}#[\\Behat\\{$ns}\\{$name}{$arg}]";

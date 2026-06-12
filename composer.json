@@ -25,14 +25,19 @@
         "behat/mink": "^1.9"
     },
     "require-dev": {
-        "behat/behat": "^3.31",
-        "symfony/filesystem": "^7.4",
-        "symfony/process": "^7.4",
-        "symfony/yaml": "^7.4"
+        "behat/behat": "^3.31 || 4.x-dev",
+        "friendsofphp/php-cs-fixer": "^3.75",
+        "phpstan/phpstan": "^2.0",
+        "symfony/filesystem": "^7.4 || ^8.0",
+        "symfony/process": "^7.4 || ^8.0",
+        "symfony/routing": "^7.4 || ^8.0",
+        "symfony/yaml": "^7.4 || ^8.0"
     },
     "suggest": {
         "symfony/routing": "Allow better support for PageObject pattern in Symfony applications"
     },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "autoload": {
         "psr-4": { "FriendsOfBehat\\PageObjectExtension\\": "src/" }
     },
@@ -40,7 +45,10 @@
         "psr-4": { "Tests\\FriendsOfBehat\\PageObjectExtension\\": "tests/" }
     },
     "scripts": {
-        "test": "behat --no-interaction"
+        "test": "behat --no-interaction",
+        "cs": "php-cs-fixer check --diff",
+        "cs-fix": "php-cs-fixer fix",
+        "stan": "phpstan analyse"
     },
     "config": {
         "sort-packages": true
