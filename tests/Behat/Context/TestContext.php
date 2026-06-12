@@ -123,7 +123,7 @@ final class FakeDriver extends CoreDriver
         return $this->pages[$path] ?? '';
     }
 
-    public function find($xpath): array
+    protected function findElementXpaths($xpath): array
     {
         $content = $this->getContent();
         if ($content === '') {
@@ -181,11 +181,6 @@ final class FakeDriver extends CoreDriver
         return false;
     }
 
-    public function isDisabled($xpath): bool
-    {
-        return false;
-    }
-
     public function getValue($xpath): string|bool|array|null
     {
         return null;
@@ -213,7 +208,7 @@ PHP);
     {
         $path = self::$workingDir . '/' . $file;
 
-        if (str_ends_with($file, '.php')) {
+        if (str_ends_with($file, '.php') && str_contains($content, '* @')) {
             $content = $this->replaceAnnotationsWithAttributes($content);
         }
 
@@ -225,7 +220,7 @@ PHP);
     #[\Behat\Step\Given('/^a feature file containing(?: "([^"]+)"|:)$/')]
     public function thereIsFeatureFile(string $content): void
     {
-        $this->thereIsFile(sprintf('features/%s.feature', md5(uniqid('', true))), $content);
+        $this->thereIsFile(sprintf('features/%s.feature', uniqid('', true)), $content);
     }
 
     #[\Behat\Step\When('/^I run Behat$/')]
@@ -287,18 +282,12 @@ PHP);
 
     private function assertOutputMatches(string $expectedOutput): void
     {
-        $pattern = '/' . preg_quote($expectedOutput, '/') . '/sm';
         $output = $this->getProcessOutput();
 
-        $result = preg_match($pattern, $output);
-        if (false === $result) {
-            throw new \InvalidArgumentException('Invalid pattern given: ' . $pattern);
-        }
-
-        if (0 === $result) {
+        if (!preg_match('/' . preg_quote($expectedOutput, '/') . '/sm', $output)) {
             throw new \DomainException(sprintf(
-                'Pattern "%s" does not match the following output:' . \PHP_EOL . \PHP_EOL . '%s',
-                $pattern,
+                'Expected output to contain "%s", got:' . \PHP_EOL . \PHP_EOL . '%s',
+                $expectedOutput,
                 $output,
             ));
         }
