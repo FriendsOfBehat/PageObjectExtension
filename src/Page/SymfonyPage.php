@@ -9,28 +9,15 @@ use Symfony\Component\Routing\RouterInterface;
 
 abstract class SymfonyPage extends Page implements SymfonyPageInterface
 {
-    /** @var RouterInterface */
-    protected $router;
-
     /** @var array */
-    protected static $additionalParameters = ['_locale' => 'en_US'];
+    protected static array $additionalParameters = ['_locale' => 'en_US'];
 
     /**
      * @param array|\ArrayAccess $minkParameters
      */
-    public function __construct(Session $session, $minkParameters, RouterInterface $router)
+    public function __construct(Session $session, array|\ArrayAccess $minkParameters, protected RouterInterface $router)
     {
-        if (!is_array($minkParameters) && !$minkParameters instanceof \ArrayAccess) {
-            throw new \InvalidArgumentException(sprintf(
-                '"$parameters" passed to "%s" has to be an array or implement "%s".',
-                self::class,
-                \ArrayAccess::class
-            ));
-        }
-
         parent::__construct($session, $minkParameters);
-
-        $this->router = $router;
     }
 
     abstract public function getRouteName(): string;
@@ -54,7 +41,7 @@ abstract class SymfonyPage extends Page implements SymfonyPageInterface
     {
         $baseUrl = rtrim($this->getParameter('base_url'), '/') . '/';
 
-        return 0 !== strpos($path, 'http') ? $baseUrl . ltrim($path, '/') : $path;
+        return !str_starts_with($path, 'http') ? $baseUrl . ltrim($path, '/') : $path;
     }
 
     protected function getUrl(array $urlParameters = []): string

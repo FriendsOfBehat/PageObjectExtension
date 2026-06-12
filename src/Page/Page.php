@@ -14,30 +14,15 @@ use Behat\Mink\Session;
 
 abstract class Page implements PageInterface
 {
-    /** @var Session */
-    private $session;
-
-    /** @var array */
-    private $parameters;
-
-    /** @var DocumentElement|null */
-    private $document;
+    private ?DocumentElement $document = null;
 
     /**
      * @param array|\ArrayAccess $minkParameters
      */
-    public function __construct(Session $session, $minkParameters = [])
-    {
-        if (!is_array($minkParameters) && !$minkParameters instanceof \ArrayAccess) {
-            throw new \InvalidArgumentException(sprintf(
-                '"$parameters" passed to "%s" has to be an array or implement "%s".',
-                self::class,
-                \ArrayAccess::class
-            ));
-        }
-
-        $this->session = $session;
-        $this->parameters = $minkParameters;
+    public function __construct(
+        private Session $session,
+        private array|\ArrayAccess $minkParameters = [],
+    ) {
     }
 
     public function open(array $urlParameters = []): void
@@ -103,9 +88,9 @@ abstract class Page implements PageInterface
         }
     }
 
-    protected function getParameter(string $name): ?string
+    protected function getParameter(string $name): mixed
     {
-        return $this->parameters[$name] ?? null;
+        return $this->minkParameters[$name] ?? null;
     }
 
     /**
@@ -184,7 +169,7 @@ abstract class Page implements PageInterface
     /**
      * @param string|array $selector
      */
-    private function getSelectorAsXpath($selector, SelectorsHandler $selectorsHandler): string
+    private function getSelectorAsXpath(string|array $selector, SelectorsHandler $selectorsHandler): string
     {
         $selectorType = is_array($selector) ? key($selector) : 'css';
         $locator = is_array($selector) ? $selector[$selectorType] : $selector;
@@ -192,14 +177,14 @@ abstract class Page implements PageInterface
         return $selectorsHandler->selectorToXpath($selectorType, $locator);
     }
 
-    private function resolveParameters(string $name, array $parameters, array $definedElements): string
+    private function resolveParameters(string $name, array $parameters, array $definedElements): string|array
     {
         if (!is_array($definedElements[$name])) {
             return strtr($definedElements[$name], $parameters);
         }
 
         array_map(
-            function ($definedElement) use ($parameters) {
+            static function ($definedElement) use ($parameters) {
                 return strtr($definedElement, $parameters);
             }, $definedElements[$name]
         );

@@ -11,7 +11,7 @@
         {
             "name": "Kamil Kokot",
             "email": "kamil@kokot.me",
-            "homepage": "http://kamil.kokot.me"
+            "homepage": "https://kamilkokot.com"
         },
         {
             "name": "Mateusz Zalewski",
@@ -20,12 +20,12 @@
         }
     ],
     "require": {
-        "php": "^7.1 || ^8.0",
+        "php": "^8.3",
 
-        "behat/mink": "^1.7"
+        "behat/mink": "^1.9"
     },
     "require-dev": {
-        "symfony/routing": "^3.4 || ^4.4 || ^5.1"
+        "symfony/routing": "^7.4"
     },
     "suggest": {
         "symfony/routing": "Allow better support for PageObject pattern in Symfony applications"
@@ -38,7 +38,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.3-dev"
+            "dev-master": "0.4-dev"
         }
     }
 }
