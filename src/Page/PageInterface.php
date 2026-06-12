@@ -11,7 +11,7 @@ interface PageInterface
      */
     public function open(array $urlParameters = []): void;
 
-    public function tryToOpen(array $urlParameters = []):void;
+    public function tryToOpen(array $urlParameters = []): void;
 
     /**
      * @throws UnexpectedPageException

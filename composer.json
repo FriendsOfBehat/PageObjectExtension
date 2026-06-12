@@ -11,7 +11,7 @@
         {
             "name": "Kamil Kokot",
             "email": "kamil@kokot.me",
-            "homepage": "http://kamil.kokot.me"
+            "homepage": "https://kamilkokot.com"
         },
         {
             "name": "Mateusz Zalewski",
@@ -20,25 +20,42 @@
         }
     ],
     "require": {
-        "php": "^7.1 || ^8.0",
+        "php": "^8.3",
 
-        "behat/mink": "^1.7"
+        "behat/mink": "^1.9"
     },
     "require-dev": {
-        "symfony/routing": "^3.4 || ^4.4 || ^5.1"
+        "behat/behat": "^3.31 || 4.x-dev",
+        "friendsofphp/php-cs-fixer": "^3.75",
+        "phpstan/phpstan": "^2.0",
+        "symfony/filesystem": "^7.4 || ^8.0",
+        "symfony/process": "^7.4 || ^8.0",
+        "symfony/routing": "^7.4 || ^8.0",
+        "symfony/yaml": "^7.4 || ^8.0"
     },
     "suggest": {
         "symfony/routing": "Allow better support for PageObject pattern in Symfony applications"
     },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "autoload": {
         "psr-4": { "FriendsOfBehat\\PageObjectExtension\\": "src/" }
+    },
+    "autoload-dev": {
+        "psr-4": { "Tests\\FriendsOfBehat\\PageObjectExtension\\": "tests/" }
+    },
+    "scripts": {
+        "test": "behat --no-interaction",
+        "cs": "php-cs-fixer check --diff",
+        "cs-fix": "php-cs-fixer fix",
+        "stan": "phpstan analyse"
     },
     "config": {
         "sort-packages": true
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.3-dev"
+            "dev-master": "0.4-dev"
         }
     }
 }
