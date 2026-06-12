@@ -74,7 +74,6 @@ jobs:
     test:
         name: PHP ${{ matrix.php-version }} / Symfony ${{ matrix.symfony-version }} / Behat ${{ matrix.behat-version }}
         runs-on: ubuntu-22.04
-        continue-on-error: ${{ matrix.experimental }}
         strategy:
             fail-fast: false
             matrix:
@@ -84,18 +83,17 @@ jobs:
                     - '8.5'
                 symfony-version: ['7.4']
                 behat-version: ['^3.31']
-                experimental: [false]
                 include:
-                    # Behat 4 + Symfony 7.4 (experimental until Behat 4 stable)
-                    - { php-version: '8.3', symfony-version: '7.4', behat-version: '4.x-dev', experimental: true }
-                    - { php-version: '8.4', symfony-version: '7.4', behat-version: '4.x-dev', experimental: true }
-                    - { php-version: '8.5', symfony-version: '7.4', behat-version: '4.x-dev', experimental: true }
+                    # Behat 4 + Symfony 7.4
+                    - { php-version: '8.3', symfony-version: '7.4', behat-version: '4.x-dev' }
+                    - { php-version: '8.4', symfony-version: '7.4', behat-version: '4.x-dev' }
+                    - { php-version: '8.5', symfony-version: '7.4', behat-version: '4.x-dev' }
                     # Behat 4 + Symfony 8.0 (PHP 8.4+ only — Symfony 8 requires PHP 8.4)
-                    - { php-version: '8.4', symfony-version: '8.0', behat-version: '4.x-dev', experimental: true }
-                    - { php-version: '8.5', symfony-version: '8.0', behat-version: '4.x-dev', experimental: true }
+                    - { php-version: '8.4', symfony-version: '8.0', behat-version: '4.x-dev' }
+                    - { php-version: '8.5', symfony-version: '8.0', behat-version: '4.x-dev' }
                     # Behat 4 + Symfony 8.1
-                    - { php-version: '8.4', symfony-version: '8.1', behat-version: '4.x-dev', experimental: true }
-                    - { php-version: '8.5', symfony-version: '8.1', behat-version: '4.x-dev', experimental: true }
+                    - { php-version: '8.4', symfony-version: '8.1', behat-version: '4.x-dev' }
+                    - { php-version: '8.5', symfony-version: '8.1', behat-version: '4.x-dev' }
         steps:
             - uses: actions/checkout@v4
             - uses: shivammathur/setup-php@v2
