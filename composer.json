@@ -25,13 +25,22 @@
         "behat/mink": "^1.9"
     },
     "require-dev": {
-        "symfony/routing": "^7.4"
+        "behat/behat": "^3.31",
+        "symfony/filesystem": "^7.4",
+        "symfony/process": "^7.4",
+        "symfony/yaml": "^7.4"
     },
     "suggest": {
         "symfony/routing": "Allow better support for PageObject pattern in Symfony applications"
     },
     "autoload": {
         "psr-4": { "FriendsOfBehat\\PageObjectExtension\\": "src/" }
+    },
+    "autoload-dev": {
+        "psr-4": { "Tests\\FriendsOfBehat\\PageObjectExtension\\": "tests/" }
+    },
+    "scripts": {
+        "test": "behat --no-interaction"
     },
     "config": {
         "sort-packages": true
